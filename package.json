@@ -1,18 +1,21 @@
 {
   "name": "fyyy-express",
   "version": "0.0.0",
-  "private": true,
+  "description": "后端 Express 项目",
+  "main": "index.js",
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "node ./src/index.js",
+    "dev": "nodemon index.js",
     "deploy": "node ./scripts/deploy.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
   "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "~4.16.1",
-    "fs-extra": "^11.3.0",
-    "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "express": "^5.1.0",
+    "fs-extra": "^11.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
   }
 }
