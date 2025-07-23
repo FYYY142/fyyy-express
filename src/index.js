@@ -1,6 +1,14 @@
 const express = require('express')
 const app = express()
 
+// 引入路由文件
+const homeRouter = require('./routes/home')
+const dailyQuoteRouter = require('./routes/daily-quote')
+const navDataRouter = require('./routes/nav-data')
+
+// 中间件
+app.use(express.json()) // 解析JSON请求体
+
 // 添加CORS支持，允许前端访问
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
@@ -8,40 +16,10 @@ app.use((req, res, next) => {
   next()
 })
 
-app.get('/', (req, res) => res.send('Hello Express'))
-
-// 每日一句API接口
-app.get('/api/daily-quote', async (req, res) => {
-  try {
-    // 使用fetch获取外部API数据
-    const response = await fetch('https://api.xygeng.cn/one')
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    
-    const data = await response.json()
-    
-    // 检查返回的数据结构
-    if (data.code === 200 && data.data && data.data.content) {
-      // 只返回content字段给前端
-      res.json({
-        success: true,
-        content: data.data.content
-      })
-    } else {
-      throw new Error('Invalid data structure from external API')
-    }
-    
-  } catch (error) {
-    console.error('Error fetching daily quote:', error)
-    res.status(500).json({
-      success: false,
-      error: '获取每日一句失败',
-      message: error.message
-    })
-  }
-})
+// 使用路由
+app.use('/', homeRouter)
+app.use('/api', dailyQuoteRouter)
+app.use('/api', navDataRouter)
 
 app.listen(3000, () => console.log('Server ready on port 3000.'))
 
