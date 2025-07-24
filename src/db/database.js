@@ -1,28 +1,11 @@
-const sqlite3 = require('sqlite3').verbose()
-const path = require('path')
+const { createClient } = require('@supabase/supabase-js')
 
-// 数据库文件路径
-const dbPath = path.resolve(__dirname, 'nav_data.db')
+// Supabase配置
+const supabaseUrl = 'https://wgfwqqsjqvrhhzerqqat.supabase.co'
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnZndxcXNqcXZyaGh6ZXJxcWF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzNDY4NzgsImV4cCI6MjA2ODkyMjg3OH0.rW5todNpCGU5zoU5uDbT6ZH9ET5OhSY313vL74-ui18"
 
-// 连接数据库 (如果不存在则创建)
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('Error opening database', err.message)
-  } else {
-    console.log('Connected to the SQLite database.')
-    // 创建表 (如果不存在)
-    db.run(`CREATE TABLE IF NOT EXISTS nav_sites (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      url TEXT NOT NULL,
-      icon TEXT NOT NULL,
-      iconType TEXT NOT NULL CHECK(iconType IN ('img', 'svg'))
-    )`, (err) => {
-      if (err) {
-        console.error('Error creating table', err.message)
-      }
-    })
-  }
-})
+// 创建Supabase客户端
+const supabase = createClient(supabaseUrl, supabaseKey)
 
-module.exports = db
+// 导出Supabase客户端
+module.exports = supabase
